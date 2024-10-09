@@ -18,7 +18,7 @@ dc = [0, 1, 0, -1]
 answer = 0
 
 def inRange(r,c):
-    return 3<=r<R+3 and 0<=c<c
+    return 3 <= r< R+3 and 0<=c<C
 
 def bfs(x, y):
     global EXIT
@@ -28,13 +28,14 @@ def bfs(x, y):
     current = (x, y)
     queue = list()
     queue.append(current)
+    visited[x][y] = 1
     max_row = -1
 
     while queue:
         curr_x, curr_y = queue.pop(0)
         curr_idx = GRID[curr_x][curr_y]
-        if curr_x-2 > max_row:
-            max_row = curr_x-2
+        if curr_x > max_row:
+            max_row = curr_x
 
         for d in range(4):
             new_x, new_y = curr_x+dx[d], curr_y+dy[d]
@@ -44,7 +45,7 @@ def bfs(x, y):
                         visited[new_x][new_y] = 1
                         queue.append((new_x,new_y))
     # print("max_row : ", max_row)
-    return max_row
+    return max_row - 3 + 1
 
 def move(r, c, d, idx):
     global R,C
@@ -67,7 +68,7 @@ def move(r, c, d, idx):
         else:
             break
     # 맵 안에 있는지 확인
-    if 3<=r<R+3 and 0<=c<C and (inRange(r+dr[i],c+dc[i]) for i in range(4)):
+    if inRange(r,c) and all(inRange(r+dr[i],c+dc[i]) for i in range(4)):
         GRID[r][c] = idx
         for i in range(4):
             GRID[r+dr[i]][c+dc[i]] = idx
